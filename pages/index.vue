@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="container full" v-if="!showQuestion">
         <div class="row" :class="{category: parseInt(rowAmount) === 0, questions: parseInt(rowAmount) !== 0}" v-for="(dataArr, rowAmount) in myJson" :key="rowAmount">
             <div class="col" v-for="(data, index) in dataArr" :key="index" @click="openQuestion(rowAmount, index)">
@@ -12,8 +13,11 @@
         </div>
     </div>
     <div class="container full blue-bg" v-else>
-        <span class="oi oi-arrow-circle-left" @click="clearQuestion()"></span>
+        <span class="oi oi-arrow-thick-left" @click="clearQuestion()"></span>
         <div class="question">{{ curQuestion }}</div>
+    </div>
+
+
     </div>
 </template>
 
@@ -59,6 +63,9 @@
         color: #fff;
         font-size: 16px;
         cursor: pointer;
+        position: absolute;
+        top: 15px;
+        left: 15px;
     }
 
     .container.full {
@@ -76,7 +83,7 @@
 
     .container > .row > div.col {
         background-color: #0000a6;
-        margin: 0 10px 10px 0;
+        margin: 0 8px 8px 0;
         padding: 15px;
         text-align: center;
         text-transform: uppercase;
@@ -91,7 +98,7 @@
 
     .container > .row.category > div.col {
         color: #ace8fa;
-        height: 90%;
+        height: 92%;
     }
 
     .container > .row.questions > div.col {
