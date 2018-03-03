@@ -1,8 +1,9 @@
 <template>
     <div class="container full">
         <nuxt-link to="/game">
-            <img src="~/assets/img/splash.jpg" alt="" />
-            <div class="text">Click To Proceed</div>
+            <img class="flag" src="~/assets/img/splash.jpg" alt="" />
+            <img class="coat" src="~/assets/img/coat.png" alt="" />
+            <div class="family">O'Brien Family Reunion Edition</div>
         </nuxt-link>
     </div>
 </template>
@@ -37,6 +38,13 @@
             }, false);
 
             this.audio.play();
+
+            // add event listeners
+            window.addEventListener('keyup', function(e) {
+                if (e.keyCode === 32){ // space bar
+                    $nuxt.$router.push('/game');
+                }
+            });
         },
 
         destroyed() {
@@ -52,22 +60,33 @@
         max-width: 100%;
         height: 100vh;
         padding: 0;
+        position: relative;
     }
 
-    .container.full img {
+    .container.full img.flag {
         width: 100%;
         height: 100%;
         cursor: pointer;
     }
 
-    .container.full .text {
+    .container.full img.coat {
+        width: 14vw;
+        margin: auto;
         position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .container.full .family {
+        position: absolute;
+        bottom: 30px;
         width: 100%;
-        bottom: 15px;
         margin: 0 auto;
         text-align: center;
         font-weight: bold;
         color: #fff;
-        font-size: 2vw;
+        font-size: 4.5vw;
+        text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
     }
 </style>
