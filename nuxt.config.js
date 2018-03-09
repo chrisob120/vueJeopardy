@@ -11,10 +11,16 @@ module.exports = {
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        ],
+        script: [
+            { src: 'http://www.youtube.com/player_api' }
         ]
     },
     modules: [
         'bootstrap-vue/nuxt'
+    ],
+    plugins: [
+        '~/plugins/youtube'
     ],
     css: [
         { src: '~/assets/iconic/font/css/open-iconic-bootstrap.css' }
@@ -27,6 +33,7 @@ module.exports = {
     ** Build configuration
     */
     build: {
+        vendor: ['vue-youtube-embed'],
         /*
         ** Run ESLint on save
         */

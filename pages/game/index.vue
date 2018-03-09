@@ -1,60 +1,99 @@
 <template>
     <div>
-        <div class="container full" v-if="!showQuestion">
-            <div class="row" :class="{category: parseInt(rowAmount) === 0, questions: parseInt(rowAmount) !== 0}" v-for="(dataArr, rowAmount) in myJson" :key="rowAmount">
-                <div class="col" v-for="(data, index) in dataArr" :key="index" @click="openQuestion(rowAmount, index)">
-                    <template v-if="parseInt(rowAmount) === 0">
-                        {{ data }}
-                    </template>
-                    <template v-else>
-                        <span v-show="data.show">${{ rowAmount }}</span>
-                    </template>
+        <template v-if="!this.onFinalJeopardy">
+            <div class="container full" v-if="!showQuestion">
+                <div class="row" :class="{category: parseInt(rowAmount) === 0, questions: parseInt(rowAmount) !== 0}" v-for="(dataArr, rowAmount) in myJson" :key="rowAmount">
+                    <div class="col" v-for="(data, index) in dataArr" :key="index" @click="openQuestion(rowAmount, index)">
+                        <template v-if="parseInt(rowAmount) === 0">
+                            {{ data }}
+                        </template>
+                        <template v-else>
+                            <span v-show="data.show">${{ rowAmount }}</span>
+                        </template>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container full blue-bg" v-else>
-            <span class="oi oi-arrow-thick-left back" @click="clearQuestion()"></span>
-            <div class="question">{{ curQuestion }}</div>
+            <div class="container full blue-bg" v-else>
+                <span v-if="questionsLeft > 0" class="oi oi-arrow-thick-left dir back" @click="clearQuestion()"></span>
+                <span v-else class="oi oi-arrow-thick-right dir forward" @click="goToFinalJeopardy()"></span>
+                <div class="question">{{ curQuestion }}</div>
 
-            <div class="card fade-in" v-if="showAnswer">
-                <div class="card-body">{{ curAnswer }}</div>
+                <div class="card fade-in" v-if="showAnswer">
+                    <div class="card-body">{{ curAnswer }}</div>
+                </div>
+
+                <span class="oi oi-target show" @click="showAnswer = true"></span>
             </div>
+        </template>
+        <div class="container full blue-bg" v-else>
+            <div class="question fade-in" v-if="showEndingText">{{ config.endText  }}</div>
+            <template v-else>
+                <div class="question fade-in" v-if="!showFinalAnswer">{{ finalJeopardyQuestion }}</div>
 
-            <span class="oi oi-target show" @click="showAnswer = true"></span>
+                <youtube v-else
+                        :video-id="config.videoId"
+                        :player-vars="config.videoOptions"
+                        @ended="onEnded"
+                        :class="{ 'fade-out': showEndingText }">
+                </youtube>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
     import jsonData from '../../assets/data.json';
+    import config from '../../assets/config.json';
 
     export default {
         data() {
             return {
                 myJson: jsonData,
+                config: config,
                 showQuestion: false,
                 curQuestion: '',
                 curAnswer: '',
                 showAnswer: false,
-                prevQuestion: {}
+                prevQuestion: {},
+                questionsLeft: 0,
+                onFinalJeopardy: false,
+                finalJeopardyQuestion: config.finalJeopardyQuestion,
+                showFinalAnswer: false,
+                showEndingText: false
             }
         },
 
         mounted() {
             let self = this;
 
+            let cnt = 0;
+
+            Object.keys(this.myJson).forEach(key => {
+                if (key !== '0') {
+                    this.myJson[key].forEach(item => {
+                        if (item.show) {
+                            cnt++;
+                        }
+                    });
+                }
+            });
+
+            this.questionsLeft = cnt;
+
             // add event listeners
             window.addEventListener('keyup', function(e) {
-                if (e.keyCode === 32){ // space bar
-                    self.showAnswer = true;
-                } else if (e.key === "Backspace" || e.key === "Delete") { // backspace and delete
-                    self.showAnswer = false;
-                } else if (e.keyCode === 37) { // left arrow (go back to grid)
-                    self.clearQuestion();
-                } else if (e.keyCode === 39) { // right arrow (redo last question)
-                    self.getPreviousQuestion();
-                } else if (e.keyCode === 17) { // left control (for going back to home page)
-                    $nuxt.$router.push('/');
+                if (self.questionsLeft > 0) {
+                    if (e.keyCode === 32){ // space bar
+                        self.showAnswer = true;
+                    } else if (e.key === "Backspace" || e.key === "Delete") { // backspace and delete
+                        self.showAnswer = false;
+                    } else if (e.keyCode === 37) { // left arrow (go back to grid)
+                        self.clearQuestion();
+                    } else if (e.keyCode === 39) { // right arrow (redo last question)
+                        //self.getPreviousQuestion();
+                    } else if (e.keyCode === 17) { // left control (for going back to home page)
+                        $nuxt.$router.push('/');
+                    }
                 }
             });
         },
@@ -65,6 +104,8 @@
                 let cardObj = this.myJson[keyCheck][index];
 
                 if (keyCheck !== 0 && cardObj.show || keyCheck !== 0 && force) {
+                    this.questionsLeft--;
+
                     cardObj.amount = keyCheck;
                     cardObj.show = false;
                     this.showQuestion = true;
@@ -73,6 +114,8 @@
 
                     this.prevQuestion.key = key;
                     this.prevQuestion.index = index;
+
+                    console.log(this.questionsLeft + ' questions left.');
                 }
             },
 
@@ -85,6 +128,24 @@
                 this.curQuestion = '';
                 this.curAnswer = '';
                 this.showAnswer = false;
+            },
+
+            goToFinalJeopardy() {
+                this.onFinalJeopardy = true;
+
+                setTimeout(() => {
+                    this.showFinalAnswer = true;
+                }, 3000);
+            },
+
+            onEnded() {
+                // show final text
+                this.showEndingText = true;
+
+                // play music
+                let audio = new Audio('/sound/irish_jigs.mp3');
+                audio.volume = this.config.endVolume;
+                audio.play();
             }
         }
     }
@@ -95,12 +156,19 @@
         background: #000;
     }
 
-    span.oi.back {
+    span.oi.dir {
         color: #fff;
         cursor: pointer;
         position: absolute;
         top: 15px;
+    }
+
+    span.oi.back {
         left: 15px;
+    }
+
+    span.oi.forward {
+        right: 15px;
     }
 
     span.oi.show {
@@ -188,6 +256,20 @@
         text-align: center;
     }
 
+    iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -201,6 +283,25 @@
         -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
         -moz-animation-fill-mode:forwards;
         animation-fill-mode:forwards;
+
+        -webkit-animation-duration:1s;
+        -moz-animation-duration:1s;
+        animation-duration:1s;
+    }
+
+    @-webkit-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+    @-moz-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+    @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+
+    .fade-out {
+        opacity:0;  /* make things invisible upon start */
+        -webkit-animation:fadeOut ease-out 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+        -moz-animation:fadeOut ease-out 1;
+        animation:fadeOut ease-out 1;
+
+        -webkit-animation-fill-mode:backwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 0)*/
+        -moz-animation-fill-mode:backwards;
+        animation-fill-mode:backwards;
 
         -webkit-animation-duration:1s;
         -moz-animation-duration:1s;

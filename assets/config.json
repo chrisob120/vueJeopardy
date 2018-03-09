@@ -1,5 +1,15 @@
 {
   "volume": 0.2,
+  "endVolume": 0.2,
   "soundUrl": "https://ia800302.us.archive.org/3/items/JeopardyTheme/Jeopardy.mp3",
-  "loopNum": 50
+  "loopNum": 50,
+  "finalJeopardyQuestion": "Who is the best dancer girl?",
+  "videoId": "P3lXKxOkxbg",
+  "videoOptions": {
+	"autoplay": 1,
+	"rel": 0,
+	"showinfo": 0,
+	"iv_load_policy": 3
+  },
+  "endText": "Thanks for playing and congratulations to all the award winners..."
 }
