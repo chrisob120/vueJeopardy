@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import config from '../assets/config.json';
+    import config from '../static/config.json';
 
     export default {
         data() {
@@ -27,7 +27,6 @@
 
             this.audio.addEventListener('ended', function() {
                 self.cnt++;
-                this.currentTime = 0;
 
                 if (self.cnt < self.config.loopNum) {
                     let curNum = self.cnt + 1;

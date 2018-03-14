@@ -16,7 +16,7 @@
             <div class="container full blue-bg" v-else>
                 <span v-if="questionsLeft > 0" class="oi oi-arrow-thick-left dir back" @click="clearQuestion()"></span>
                 <span v-else class="oi oi-arrow-thick-right dir forward" @click="goToFinalJeopardy()"></span>
-                <div class="question">{{ curQuestion }}</div>
+                <div class="question" :style="{ fontSize: getFontSize(curQuestion) }">{{ curQuestion }}</div>
 
                 <div class="card fade-in" v-if="showAnswer">
                     <div class="card-body">{{ curAnswer }}</div>
@@ -26,24 +26,35 @@
             </div>
         </template>
         <div class="container full blue-bg" v-else>
-            <div class="question fade-in" v-if="showEndingText">{{ config.endText  }}</div>
+            <template v-if="showEndingText">
+                <img class="dancers" src="~/assets/img/dancers.gif" alt="" />
+                <div class="question final fade-in">{{ config.endText }}</div>
+            </template>
             <template v-else>
-                <div class="question fade-in" v-if="!showFinalAnswer">{{ finalJeopardyQuestion }}</div>
+                <template v-if="!showFinalAnswer">
+                    <div class="final-title" v-if="showSpin">Final Jeopardy</div>
+                    <div class="question fade-in" v-if="!showSpin">{{ finalJeopardyQuestion }}</div>
+                </template>
 
+                <iframe v-else
+                        :src="'https://www.youtube.com/embed/' + config.videoId + '?autoplay=1&rel=0&showinfo=0&iv_load_policy=3'">
+                </iframe>
+                <!--
                 <youtube v-else
                         :video-id="config.videoId"
                         :player-vars="config.videoOptions"
                         @ended="onEnded"
                         :class="{ 'fade-out': showEndingText }">
                 </youtube>
+                -->
             </template>
         </div>
     </div>
 </template>
 
 <script>
-    import jsonData from '../../assets/data.json';
-    import config from '../../assets/config.json';
+    import jsonData from '../../static/data.json';
+    import config from '../../static/config.json';
 
     export default {
         data() {
@@ -59,7 +70,8 @@
                 onFinalJeopardy: false,
                 finalJeopardyQuestion: config.finalJeopardyQuestion,
                 showFinalAnswer: false,
-                showEndingText: false
+                showEndingText: false,
+                showSpin: true
             }
         },
 
@@ -90,9 +102,11 @@
                     } else if (e.keyCode === 37) { // left arrow (go back to grid)
                         self.clearQuestion();
                     } else if (e.keyCode === 39) { // right arrow (redo last question)
-                        //self.getPreviousQuestion();
+                        self.getPreviousQuestion();
                     } else if (e.keyCode === 17) { // left control (for going back to home page)
                         $nuxt.$router.push('/');
+                    } else if (e.keyCode === 70) {
+                        self.goToFinalJeopardy();
                     }
                 }
             });
@@ -134,8 +148,24 @@
                 this.onFinalJeopardy = true;
 
                 setTimeout(() => {
-                    this.showFinalAnswer = true;
-                }, 3000);
+                    this.showSpin = false;
+
+                    let self = this;
+                    let audio = new Audio(this.config.soundUrl);
+                    audio.volume = this.config.volume;
+                    audio.play();
+
+                    // add event listeners
+                    window.addEventListener('keyup', function(e) {
+                        if (e.keyCode === 96){ // num pad 0
+                            audio.pause();
+                        } else if (e.keyCode === 105) { // num pad 9
+                            self.showFinalAnswer = true;
+                        } else if (e.keyCode === 103) { // num pad 7
+                            self.onEnded();
+                        }
+                    });
+                }, 1500);
             },
 
             onEnded() {
@@ -146,6 +176,24 @@
                 let audio = new Audio('/sound/irish_jigs.mp3');
                 audio.volume = this.config.endVolume;
                 audio.play();
+            },
+
+            getFontSize(question) {
+                const len = question.length;
+
+                console.log(len);
+
+                if (len > 400) {
+                    return '2.5vw';
+                } else if (len > 350) {
+                    return '3vw';
+                } else if (len > 250) {
+                    return '3vw';
+                } else if (len > 150) {
+                    return '3.2vw';
+                }
+
+                return '4vw';
             }
         }
     }
@@ -194,6 +242,14 @@
         height: 16.67%;
     }
 
+    .dancers {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
     .container > .row > div.col {
         background-color: #0000a6;
         margin: 0 8px 8px 0;
@@ -201,12 +257,13 @@
         text-align: center;
         text-transform: uppercase;
         font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        font-size: 2.3vw;
+        font-size: 1.8vw;
         font-weight: bold;
         color: #d69136;
         display: flex;
         align-items: center;
         justify-content: center;
+        word-wrap: break-word;
     }
 
     .container > .row.category > div.col {
@@ -223,12 +280,38 @@
         background-color: #0000a6;
     }
 
+    .final-title {
+        font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 120%;
+        font-weight: bold;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-shadow: 4px 4px 4px #000;
+        padding: 400px;
+        margin-top: -25px;
+        animation: grow 1s;
+    }
+
+    @keyframes grow {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
     .question {
         height: 100%;
         font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        font-size: 4vw;
         line-height: 120%;
         font-weight: bold;
+        font-size: 4vw;
         text-transform: uppercase;
         color: #fff;
         display: flex;
@@ -240,13 +323,19 @@
         margin-top: -25px;
     }
 
+    .question.final {
+        font-size: 3.6vw;
+        margin-top: 0;
+    }
+
     .card {
         width: 50%;
         margin: -140px auto;
     }
 
     .card > .card-body {
-        background: #0000a6;
+        background: #00005c;
+        /*background: #0000a6;*/
         color: #fff;
         border: 3px solid #fff;
         font-weight: bold;
@@ -268,6 +357,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        border: none;
     }
 
     @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
