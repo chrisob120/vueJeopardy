@@ -17,7 +17,8 @@ module.exports = {
         ]
     },
     modules: [
-        'bootstrap-vue/nuxt'
+        'bootstrap-vue/nuxt',
+        '@nuxtjs/axios'
     ],
     plugins: [
         '~/plugins/youtube'
@@ -25,6 +26,10 @@ module.exports = {
     css: [
         { src: '~/assets/iconic/font/css/open-iconic-bootstrap.css' }
     ],
+    axios: {
+        // baseURL: (process.env.NODE_ENV === 'prod') ? '/' : 'http://localhost:3000'
+        baseURL: '/'
+    },
     /*
     ** Customize the progress bar color
     */

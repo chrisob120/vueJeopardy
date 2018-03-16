@@ -16,7 +16,8 @@
             <div class="container full blue-bg" v-else>
                 <span v-if="questionsLeft > 0" class="oi oi-arrow-thick-left dir back" @click="clearQuestion()"></span>
                 <span v-else class="oi oi-arrow-thick-right dir forward" @click="goToFinalJeopardy()"></span>
-                <div class="question" :style="{ fontSize: getFontSize(curQuestion) }">{{ curQuestion }}</div>
+                <div :class="{ 'hide': showAnswer && isGpaQuestion }" class="question" :style="{ fontSize: getFontSize(curQuestion) }">{{ curQuestion }}</div>
+                <img v-if="isGpaQuestion && showAnswer" class="gpaPic fade-in" src="~/assets/img/gpa.jpg" alt="" />
 
                 <div class="card fade-in" v-if="showAnswer">
                     <div class="card-body">{{ curAnswer }}</div>
@@ -53,14 +54,12 @@
 </template>
 
 <script>
-    import jsonData from '../../static/data.json';
-    import config from '../../static/config.json';
 
     export default {
         data() {
             return {
-                myJson: jsonData,
-                config: config,
+                myJson: {},
+                config: {},
                 showQuestion: false,
                 curQuestion: '',
                 curAnswer: '',
@@ -68,33 +67,36 @@
                 prevQuestion: {},
                 questionsLeft: 0,
                 onFinalJeopardy: false,
-                finalJeopardyQuestion: config.finalJeopardyQuestion,
+                finalJeopardyQuestion: '',
                 showFinalAnswer: false,
                 showEndingText: false,
-                showSpin: true
+                showSpin: true,
+                isGpaQuestion: false
             }
         },
 
         mounted() {
             let self = this;
 
-            let cnt = 0;
+            this.getJson().then(res => {
+               this.myJson = res.data;
 
-            Object.keys(this.myJson).forEach(key => {
-                if (key !== '0') {
-                    this.myJson[key].forEach(item => {
-                        if (item.show) {
-                            cnt++;
-                        }
-                    });
-                }
-            });
+                let cnt = 0;
 
-            this.questionsLeft = cnt;
+                Object.keys(this.myJson).forEach(key => {
+                    if (key !== '0') {
+                        this.myJson[key].forEach(item => {
+                            if (item.show) {
+                                cnt++;
+                            }
+                        });
+                    }
+                });
 
-            // add event listeners
-            window.addEventListener('keyup', function(e) {
-                if (self.questionsLeft > 0) {
+                this.questionsLeft = cnt;
+
+                // add event listeners
+                window.addEventListener('keyup', function(e) {
                     if (e.keyCode === 32){ // space bar
                         self.showAnswer = true;
                     } else if (e.key === "Backspace" || e.key === "Delete") { // backspace and delete
@@ -108,28 +110,44 @@
                     } else if (e.keyCode === 70) {
                         self.goToFinalJeopardy();
                     }
-                }
+                });
             });
         },
 
         methods: {
+            getJson() {
+                return this.$axios.get('/config.json').then(res => {
+                    this.config = res.data;
+                    this.finalJeopardyQuestion = res.data.finalJeopardyQuestion;
+
+                    return this.$axios.get('/data.json');
+                });
+            },
+
             openQuestion(key, index, force = false) {
                 let keyCheck = parseInt(key);
                 let cardObj = this.myJson[keyCheck][index];
 
-                if (keyCheck !== 0 && cardObj.show || keyCheck !== 0 && force) {
-                    this.questionsLeft--;
+                if (keyCheck !== 0) {
+                    if (cardObj.show || force) {
+                        this.questionsLeft--;
 
-                    cardObj.amount = keyCheck;
-                    cardObj.show = false;
-                    this.showQuestion = true;
-                    this.curQuestion = cardObj.question;
-                    this.curAnswer = cardObj.answer;
+                        cardObj.amount = keyCheck;
+                        cardObj.show = false;
 
-                    this.prevQuestion.key = key;
-                    this.prevQuestion.index = index;
+                        this.isGpaQuestion = cardObj.isGpa !== undefined;
+                        this.showQuestion = true;
+                        this.curQuestion = cardObj.question;
+                        this.curAnswer = cardObj.answer;
 
-                    console.log(this.questionsLeft + ' questions left.');
+                        this.prevQuestion.key = key;
+                        this.prevQuestion.index = index;
+
+                        console.log(this.questionsLeft + ' questions left.');
+                    } else {
+                        // allow for accidentally clicked questions to refill
+                        cardObj.show = true;
+                    }
                 }
             },
 
@@ -142,6 +160,7 @@
                 this.curQuestion = '';
                 this.curAnswer = '';
                 this.showAnswer = false;
+                this.isGpaQuestion = false;
             },
 
             goToFinalJeopardy() {
@@ -181,12 +200,10 @@
             getFontSize(question) {
                 const len = question.length;
 
-                console.log(len);
-
                 if (len > 400) {
                     return '2.5vw';
                 } else if (len > 350) {
-                    return '3vw';
+                    return '2.8vw';
                 } else if (len > 250) {
                     return '3vw';
                 } else if (len > 150) {
@@ -226,6 +243,20 @@
         bottom: 15px;
         left: 15px;
         top: inherit;
+    }
+
+    img.gpaPic {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 550px;
+    }
+
+    .hide {
+        opacity: 0;
     }
 
     .container.full {

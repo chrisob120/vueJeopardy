@@ -5,14 +5,15 @@
   "author": "Chris O'Brien <chris@chrisob.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "cross-env NODE_ENV=dev nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "cross-env NODE_ENV=prod nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.1.1",
     "bootstrap-vue": "^2.0.0-rc.1",
     "nuxt": "^1.0.0",
     "vue-style-loader": "^4.0.2",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
+    "cross-env": "^5.1.4",
     "eslint": "^4.15.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",

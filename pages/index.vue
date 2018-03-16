@@ -9,12 +9,10 @@
 </template>
 
 <script>
-    import config from '../static/config.json';
-
     export default {
         data() {
             return {
-                config: config,
+                config: {},
                 audio: null,
                 cnt: 0
             }
@@ -22,32 +20,45 @@
 
         mounted() {
             let self = this;
-            this.audio = new Audio(this.config.soundUrl);
-            this.audio.volume = this.config.volume;
 
-            this.audio.addEventListener('ended', function() {
-                self.cnt++;
+            this.getConfig().then(res => {
+                this.config = res.data;
 
-                if (self.cnt < self.config.loopNum) {
-                    let curNum = self.cnt + 1;
+                this.audio = new Audio(this.config.soundUrl);
+                this.audio.volume = this.config.volume;
 
-                    console.log('Loop #' + curNum +  '. Will play ' + (self.config.loopNum - curNum) + ' more times.');
-                    self.audio.play();
-                }
-            }, false);
+                this.audio.addEventListener('ended', function() {
+                    self.cnt++;
 
-            this.audio.play();
+                    if (self.cnt < self.config.loopNum) {
+                        let curNum = self.cnt + 1;
 
-            // add event listeners
-            window.addEventListener('keyup', function(e) {
-                if (e.keyCode === 32){ // space bar
-                    $nuxt.$router.push('/game');
-                }
+                        console.log('Loop #' + curNum +  '. Will play ' + (self.config.loopNum - curNum) + ' more times.');
+                        self.audio.play();
+                    }
+                }, false);
+
+                this.audio.play();
+
+                // add event listeners
+                window.addEventListener('keyup', function(e) {
+                    if (e.keyCode === 32){ // space bar
+                        $nuxt.$router.push('/game');
+                    }
+                });
             });
         },
 
+        methods: {
+            getConfig() {
+                return this.$axios.get('/config.json');
+            }
+        },
+
         destroyed() {
-            this.audio.pause();
+            if (this.audio) {
+                this.audio.pause();
+            }
         }
     }
 </script>
