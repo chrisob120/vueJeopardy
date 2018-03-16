@@ -8,43 +8,193 @@
 	"Family Facts"
   ],
   "200": [
-	{"category": 1, "question": "Accepted into a study abroad in Galway Ireland", "answer": "Bridgette O’Brien Robertson", "show": true},
-	{"category": 2, "question": "Finished his first 5K race", "answer": "Myles Kim O’Brien Robertson", "show": true},
-	{"category": 3, "question": "The cutest little day late leprechaun", "answer": "William Parker", "show": true},
-	{"category": 4, "question": "Overcame her road rage on her commute from Tacoma to Bellevue", "answer": "Tabitha Smed", "show": true},
-	{"category": 5, "question": "The Best Guy in Town", "answer": "Jim O'Brien", "show": true},
-	{"category": 6, "question": "Test Question", "answer": "Test Answer", "show": true}
+	{
+	  "category": 1,
+	  "question": "Accepted into a study abroad in Galway Ireland",
+	  "answer": "Bridgette O’Brien Robertson",
+	  "show": true
+	},
+	{
+	  "category": 2,
+	  "question": "Finished his first 5K race",
+	  "answer": "Myles Kim O’Brien Robertson",
+	  "show": true
+	},
+	{
+	  "category": 3,
+	  "question": "The cutest little day late leprechaun",
+	  "answer": "William Parker",
+	  "show": true
+	},
+	{
+	  "category": 4,
+	  "question": "Overcame her road rage on her commute from Tacoma to Bellevue",
+	  "answer": "Tabitha Smed",
+	  "show": true
+	},
+	{
+	  "category": 5,
+	  "question": "The Best Guy in Town",
+	  "answer": "Jim O'Brien",
+	  "show": true
+	},
+	{
+	  "category": 6,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	}
   ],
   "400": [
-	{"category": 1, "question": "Made a 4.0 GPA as a Freshman at O’Dea Highschool", "answer": "Rudy Thatcher", "show": true},
-	{"category": 2, "question": "Became the setter on her National Volleyball team", "answer": "Aubrey Jones", "show": true},
-	{"category": 3, "question": "Honored by the Stanwood Camano Island Chamber of Commerce as woman of the year for her contributions to the community", "answer": "Jill Vail", "show": true},
-	{"category": 4, "question": "Married on September 30th, 2017", "answer": "Devon Jones and Lauren Kopp", "show": true},
-	{"category": 5, "question": "Known to be keenly passionate about his politics and support of working people. People may not know that he read 3-5 newspapers every day and was deeply engaged in current events. Before the cable news environment, when people listened to Larry King on the radio, Jerry was so knowledgeable that he became a 'caller' who Larry regular spoke with on his show. Larry would say, 'Jerry in Seattle...what do you think?'", "answer": "Jerry O’Brien", "show": true},
-	{"category": 6, "question": "Test Question", "answer": "Test Answer", "show": true}
+	{
+	  "category": 1,
+	  "question": "Made a 4.0 GPA as a Freshman at O’Dea Highschool",
+	  "answer": "Rudy Thatcher",
+	  "show": true
+	},
+	{
+	  "category": 2,
+	  "question": "Became the setter on her National Volleyball team",
+	  "answer": "Aubrey Jones",
+	  "show": true
+	},
+	{
+	  "category": 3,
+	  "question": "Honored by the Stanwood Camano Island Chamber of Commerce as woman of the year for her contributions to the community",
+	  "answer": "Jill Vail",
+	  "show": true
+	},
+	{
+	  "category": 4,
+	  "question": "Married on September 30th, 2017",
+	  "answer": "Devon Jones and Lauren Kopp",
+	  "show": true
+	},
+	{
+	  "category": 5,
+	  "question": "Known to be keenly passionate about his politics and support of working people. People may not know that he read 3-5 newspapers every day and was deeply engaged in current events. Before the cable news environment, when people listened to Larry King on the radio, Jerry was so knowledgeable that he became a 'caller' who Larry regular spoke with on his show. Larry would say, 'Jerry in Seattle...what do you think?'",
+	  "answer": "Jerry O’Brien",
+	  "show": true
+	},
+	{
+	  "category": 6,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	}
   ],
   "600": [
-	{"category": 1, "question": "Accepted at Seattle University and received the Belarmine Academic Scholarship and will be a walk on for the SU Basketball Team in the Fall", "answer": "Matthew Vail", "show": true},
-	{"category": 2, "question": "Turned an extra point poor snap into a perfect pass for a 2 point conversion", "answer": "Matthew Mounsey", "show": true},
-	{"category": 3, "question": "Awarded the Stanwood/Camano Island Spirit of Philanthropy Award – Pay It Forward because of her spirit of giving time to her community", "answer": "Jill Vail", "show": true},
-	{"category": 4, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 5, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 6, "question": "Test Question", "answer": "Test Answer", "show": true}
+	{
+	  "category": 1,
+	  "question": "Accepted at Seattle University and received the Belarmine Academic Scholarship and will be a walk on for the SU Basketball Team in the Fall",
+	  "answer": "Matthew Vail",
+	  "show": true
+	},
+	{
+	  "category": 2,
+	  "question": "Turned an extra point poor snap into a perfect pass for a 2 point conversion",
+	  "answer": "Matthew Mounsey",
+	  "show": true
+	},
+	{
+	  "category": 3,
+	  "question": "Awarded the Stanwood/Camano Island Spirit of Philanthropy Award – Pay It Forward because of her spirit of giving time to her community",
+	  "answer": "Jill Vail",
+	  "show": true
+	},
+	{
+	  "category": 4,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 5,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 6,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	}
   ],
   "800": [
-	{"category": 1, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 2, "question": "Chosen for high school team captain of the varsity soccer team as a sophomore while taking all AP classes and maintaining an outstanding GPA", "answer": "Carla O'Brien", "show": true},
-	{"category": 3, "question": "Drove from New York to Portland to join us at the Party tonight", "answer": "Carla O’Brien", "show": true},
-	{"category": 4, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 5, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 6, "question": "Test Question", "answer": "Test Answer", "show": true}
+	{
+	  "category": 1,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 2,
+	  "question": "Chosen for high school team captain of the varsity soccer team as a sophomore while taking all AP classes and maintaining an outstanding GPA",
+	  "answer": "Carla O'Brien",
+	  "show": true
+	},
+	{
+	  "category": 3,
+	  "question": "Drove from New York to Portland to join us at the Party tonight",
+	  "answer": "Carla O’Brien",
+	  "show": true
+	},
+	{
+	  "category": 4,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 5,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 6,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	}
   ],
   "1000": [
-	{"category": 1, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 2, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 3, "question": "Named Boy of the Year at his High School", "answer": "Cody Vail", "show": true},
-	{"category": 4, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 5, "question": "Test Question", "answer": "Test Answer", "show": true},
-	{"category": 6, "question": "Test Question", "answer": "Test Answer", "show": true}
+	{
+	  "category": 1,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 2,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 3,
+	  "question": "Named Boy of the Year at his High School",
+	  "answer": "Cody Vail",
+	  "show": true
+	},
+	{
+	  "category": 4,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 5,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	},
+	{
+	  "category": 6,
+	  "question": "Test Question",
+	  "answer": "Test Answer",
+	  "show": true
+	}
   ]
 }
