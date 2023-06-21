@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.12.2",
     "bootstrap-vue": "^2.0.0-rc.14",
     "npm": "^6.9.0",
-    "nuxt": "^1.0.0",
+    "nuxt": "^3.4.3",
     "vue-style-loader": "^4.0.2",
     "vue-youtube-embed": "^2.1.3"
   },
